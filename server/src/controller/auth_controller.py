@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from service.auth_service import AuthService
+from decorator.jwt_required import jwt_required
 
 auth_controller = Blueprint("auth_controller", __name__)
 
@@ -38,3 +39,9 @@ def logout():
         return response, 200
     except:
         print("Error!")
+
+
+@auth_controller.route("/secret", methods=["GET"])
+@jwt_required
+def secret_function():
+    return jsonify({"message": "Hello from secret api!!!"}), 200
