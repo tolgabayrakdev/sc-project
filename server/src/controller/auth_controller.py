@@ -15,8 +15,8 @@ def login():
             "access_token": result["access_token"],
             "refresh_token": result["refresh_token"]
         })
-        response.set_cookie("access_token", data["access_token"], httponly=True)
-        response.set_cookie("refresh_token", data["refresh_token"], httponly=True)
+        response.set_cookie("access_token", result["access_token"], httponly=True)
+        response.set_cookie("refresh_token", result["refresh_token"], httponly=True)
         return response, 200
     else:
         return jsonify({"message": "Error"}), 401
