@@ -10,8 +10,16 @@ def login():
     email = data["email"]
     password = data["password"]
     result = AuthService.login(email, password)
-    return result, 200
-
+    if result:
+        response = jsonify({
+            "access_token": result["access_token"],
+            "refresh_token": result["refresh_token"]
+        })
+        response.set_cookie("access_token", data["access_token"], httponly=True)
+        response.set_cookie("refresh_token", data["refresh_token"], httponly=True)
+        return response, 200
+    else:
+        return jsonify({"message": "Error"}), 401
 
 @auth_controller.route("/register", methods=["POST"])
 def register():
@@ -19,3 +27,14 @@ def register():
     result = AuthService.register(user=data)
     return result, 201
     
+
+
+@auth_controller.route("/logout", methods=["POST"])
+def logout():
+    try:
+        response = jsonify({"message": "Log out successfull."})
+        response.delete_cookie("access_token")
+        response.delete_cookie("refresh_token")
+        return response, 200
+    except:
+        print("Error!")

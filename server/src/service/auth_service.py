@@ -8,6 +8,7 @@ import psycopg2
 class AuthService:
     @staticmethod
     def login(email: str, password: str):
+        hash_password = Helper.generate_hash_password(password)
         try:
             connection = get_db_connection()
             cursor = connection.cursor()
@@ -16,13 +17,22 @@ class AuthService:
                 text,
                 (
                     email,
-                    password,
+                    hash_password,
                 ),
             )
             result = cursor.fetchall()
             connection.close()
             if result:
-                return result
+                payload = {
+                    "id": result[0][0],
+                    "email": result[0][1]
+                }
+                access_token = Helper.generate_access_token(payload)
+                refresh_token = Helper.generate_refresh_token(payload)
+                return {
+                    "access_token": access_token,
+                    "refresh_token": refresh_token
+                }
             else:
                 raise NotFound(description="User not found! Check your credential")
         except InternalServerError as e:

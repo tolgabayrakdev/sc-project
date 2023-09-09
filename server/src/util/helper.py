@@ -20,7 +20,7 @@ class Helper:
         )
 
     @staticmethod
-    def generate_access_token(payload):
+    def generate_access_token(payload: dict):
         return jwt.encode(
             {"payload": payload, "exp": int(time.time() + 3000)},
             "secret",
@@ -28,5 +28,5 @@ class Helper:
         )
 
     @staticmethod
-    def generate_refresh_token(payload):
+    def generate_refresh_token(payload: dict):
         return jwt.encode({"payload": payload}, "secret", algorithm="HS256")
