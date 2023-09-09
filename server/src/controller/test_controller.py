@@ -1,3 +1,6 @@
+"""
+
+
 from flask import Blueprint, jsonify, request
 from database import get_cursor
 from service.auth_service import AuthService
@@ -19,3 +22,6 @@ def test():
         
         return jsonify({"result": sonuclar})
 
+
+
+"""

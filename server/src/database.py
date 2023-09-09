@@ -1,10 +1,11 @@
-from psycopg2 import connect
+import psycopg2
 
-def get_cursor():
-    conn = connect(
-        host="localhost",
+def get_db_connection():
+    connection = psycopg2.connect(
         database="postgres",
         user="root",
-        password="root"
+        password="root",
+        host="localhost",
+        port="5432"
     )
-    return conn.cursor()
+    return connection

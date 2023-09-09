@@ -1,9 +1,7 @@
 from flask import Blueprint, jsonify, request
-from database import get_cursor
 from service.auth_service import AuthService
 
 auth_controller = Blueprint("auth_controller", __name__)
-cursor = get_cursor()
 
 
 @auth_controller.route("/login", methods=["POST"])
