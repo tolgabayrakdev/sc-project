@@ -47,8 +47,8 @@ class AuthService:
             
             cursor.execute("BEGIN")
             text = """
-              INSERT INTO users(username, email, password, created_at, updated_at)
-                    VALUES(%s, %s, %s, now(), now())
+              INSERT INTO users(username, email, password, role_id, created_at, updated_at)
+                    VALUES(%s, %s, %s, 1 , now(), now())
                 """
             cursor.execute(text, (user["username"], user["email"], hash_password))
             connection.commit()
