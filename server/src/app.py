@@ -1,10 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
 from controller.auth_controller import auth_controller
-
+from dotenv import load_dotenv
 
 app = Flask(__name__)
-
+load_dotenv()
 
 CORS(app, supports_credentials=True)
 

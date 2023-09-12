@@ -10,7 +10,9 @@ def jwt_required(func):
         try:
             auth_header = request.cookies.get('access_token')
             if auth_header:
-                return func(*args, **kwargs)
+                decoded_token = jwt.decode(auth_header, "secret", algorithms=["HS256"])
+                if decoded_token:
+                    return func(*args, **kwargs)
             else:
                 return jsonify({"message": "Missing access token"}), 403
         except jwt.exceptions.InvalidSignatureError:
