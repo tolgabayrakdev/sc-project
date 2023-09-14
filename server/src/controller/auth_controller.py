@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from service.auth_service import AuthService
 from decorator.jwt_required import jwt_required
+import jwt
 
 auth_controller = Blueprint("auth_controller", __name__)
 
@@ -45,3 +46,20 @@ def logout():
 @jwt_required
 def secret_function():
     return jsonify({"message": "Hello from secret api!!!"}), 200
+
+
+@auth_controller.route("/verify", methods=["POST"])
+@jwt_required
+def verify_user():
+    verify_token = request.cookies.get("access_token")
+    if verify_token:
+        decoded_token = jwt.decode(
+            verify_token, "secret",
+            algorithms=["HS256"]
+        )
+        token_information = decoded_token["payload"]
+        user_information = {
+            "id": token_information["id"],
+            "email": token_information["email"]
+        }
+        return jsonify({"success": "true", "user_information": user_information}), 200
